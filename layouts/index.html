@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
     <title>{{ .Title }}</title>
-<body>
-    {{ .Content }}
-</body>
+    <body>
+        {{- range .Ancestors.Reverse }}
+        <p><a href="{{ .Permalink }}">{{ .Title }}</a></p>
+        {{- end }}
+        <p>{{ .Title }}</p>
+        <ol>
+        {{ $s := where .Pages "Type" "!=" "noindex" }}
+        {{ range  sort $s  "File.Path"}}
+            <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+        {{ end }}
+        </ol>
+        {{ .Content }}
+    </body>
 </html>
